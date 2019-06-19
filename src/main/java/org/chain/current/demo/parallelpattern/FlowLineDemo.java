@@ -16,6 +16,7 @@ public class FlowLineDemo {
     static class Msg {
         float a;
         float b;
+        StringBuilder log = new StringBuilder();
     }
 
     static class ProcessOne implements Runnable {
@@ -24,10 +25,12 @@ public class FlowLineDemo {
             while (true) {
                 try {
                     Msg temp = qOne.take();
-                    Msg result = new Msg();
-                    result.a = (temp.a + temp.b);
-                    result.b = temp.a;
-                    qTwo.put(result);
+                    float a = temp.a;
+                    float b = temp.b;
+                    temp.a = (a + b);
+                    temp.b = a;
+                    temp.log.append("P1:B=").append(a).append(",C=").append(b).append(",(B+C)=").append(temp.a).append("<<- ->>");
+                    qTwo.put(temp);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -41,9 +44,11 @@ public class FlowLineDemo {
             while (true) {
                 try {
                     Msg temp = qTwo.take();
-                    Msg result = new Msg();
-                    result.a = temp.a * temp.b;
-                    qThree.put(result);
+                    float a = temp.a;
+                    float b = temp.b;
+                    temp.a = a * b;
+                    temp.log.append("P2:(B+C)=").append(a).append(",B=").append(b).append(",(B+C)*B=").append(temp.a).append("<<- ->>");
+                    qThree.put(temp);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -57,9 +62,10 @@ public class FlowLineDemo {
             while (true) {
                 try {
                     Msg temp = qThree.take();
-                    Msg result = new Msg();
-                    result.a = temp.a / 2;
-                    System.out.println("flow end,result = " + result.a);
+                    float a = temp.a / 2;
+                    temp.a = a;
+                    temp.log.append("P3:(B+C)*B=").append(a).append(",(B+C)*B/2=").append(temp.a);
+                    System.out.println("flow end," + temp.log);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

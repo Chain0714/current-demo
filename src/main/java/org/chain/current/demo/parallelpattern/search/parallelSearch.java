@@ -1,4 +1,4 @@
-package org.chain.current.demo.producerandconsumer;
+package org.chain.current.demo.parallelpattern.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;

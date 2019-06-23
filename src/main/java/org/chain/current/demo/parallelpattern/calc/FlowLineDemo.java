@@ -1,4 +1,4 @@
-package org.chain.current.demo.parallelpattern;
+package org.chain.current.demo.parallelpattern.calc;
 
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
